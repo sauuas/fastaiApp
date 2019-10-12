@@ -1,16 +1,137 @@
 <html lang='en'>
 <head>
   <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel='stylesheet' href='../static/style.css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src='../static/client.js'></script>
+  <script src="../static/auth.js"></script>
+  <script src="../static/index.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+  <!-- Load Stripe.js on your website. -->
+<script src="https://js.stripe.com/v3"></script>
+
 </head>
 <body>
-<div>
+  <!-- NAVBAR -->
+  <nav class="z-depth-0 grey lighten-4">
+      <div class="nav-wrapper container">
+        
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li class="logged-in" style="display: none;">
+              <a href="#" class="grey-text modal-trigger" data-target="modal-account">Account</a>
+            </li>
+            <li class="logged-in" style="display: none;">
+              <a href="#" class="grey-text" id="logout">Logout</a>
+            </li>
+            <li class="logged-in" style="display: none;">
+              <a href="#" class="grey-text modal-trigger" data-target="modal-create">Create Guide</a>
+            </li>
+            <li class="logged-out" style="display: none;">
+              <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
+            </li>
+            <li class="logged-out" style="display: none;">
+              <a href="#" class="grey-text modal-trigger" data-target="modal-signup">Sign up</a>
+            </li>
+          </span>
+        </ul>
+      </div>
+    </nav>
+  
+    <!-- SIGN UP MODAL -->
+    <div id="modal-signup" class="modal">
+      <div class="modal-content">
+        <h4>Sign up</h4><br />
+        <form id="signup-form">
+          <div class="input-field">
+            <input type="email" id="signup-email" required />
+            <label for="signup-email">Email address</label>
+          </div>
+          <div class="input-field">
+            <input type="password" id="signup-password" required />
+            <label for="signup-password">Choose password</label>
+          </div>
+          <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+<button
+style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+id="checkout-button-sku_FyWk7SsceCRUid"
+role="link"
+>
+Checkout
+</button>
+
+<div id="error-message"></div>
+
+<script>
+(function() {
+var stripe = Stripe('pk_test_CDT54sqWOlsBKVNZJUVPg5Po00xYTB6kQ6');
+
+var checkoutButton = document.getElementById('checkout-button-sku_FyWk7SsceCRUid');
+checkoutButton.addEventListener('click', function () {
+  // When the customer clicks on the button, redirect
+  // them to Checkout.
+  stripe.redirectToCheckout({
+    items: [{sku: 'sku_FyWk7SsceCRUid', quantity: 1}],
+
+    // Do not rely on the redirect to the successUrl for fulfilling
+    // purchases, customers may not always reach the success_url after
+    // a successful payment.
+    // Instead use one of the strategies described in
+    // https://stripe.com/docs/payments/checkout/fulfillment
+    successUrl: 'https://fastaiapp-85ff8.firebaseio.com',
+    cancelUrl: 'https://fastaiapp-85ff8.firebaseio.com',
+  })
+  .then(function (result) {
+    if (result.error) {
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer.
+      var displayError = document.getElementById('error-message');
+      displayError.textContent = result.error.message;
+    }
+  });
+});
+})();
+</script>
+          <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- LOGIN MODAL -->
+    <div id="modal-login" class="modal">
+      <div class="modal-content">
+        <h4>Login</h4><br />
+        <form id="login-form">
+          <div class="input-field">
+            <input type="email" id="login-email" required />
+            <label for="login-email">Email address</label>
+          </div>
+          <div class="input-field">
+            <input type="password" id="login-password" required />
+            <label for="login-password">Your password</label>
+          </div>
+          <button class="btn yellow darken-2 z-depth-0">Login</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- ACCOUNT MODAL -->
+    <div id="modal-account" class="modal">
+      <div class="modal-content center-align">
+        <h4>Account details</h4><br />
+        <div class="account-details"></div>
+        <div class="account-extras"></div>
+      </div>
+    </div>
+<div id="modal-create" class="modal">
   <div class='center'>
-    <div class='title'>Classify Bear Images 🐻</div>
+    <div class='title'>Classify lung images</div>
     <p>
-      Use images of <strong>teddy</strong> bears, <strong>black</strong> bears, <strong>grizzly</strong> bears, or
-      all three!
+      Use images of lung scans to see if it has <strong>pneumonia</strong> 
     </p>
     <div class='content'>
       <div class='no-display'>
@@ -37,5 +158,23 @@
     </div>
   </div>
 </div>
+  <script>
+
+    // Initialize Firebase
+    var firebaseConfig = {
+    apiKey: "AIzaSyDyCJQUL6F2ZW5ai8NxCdJD-17DPrHESWo",
+    authDomain: "fastaiapp-85ff8.firebaseapp.com",
+    databaseURL: "https://fastaiapp-85ff8.firebaseio.com",
+    projectId: "fastaiapp-85ff8",
+    storageBucket: "fastaiapp-85ff8.appspot.com",
+    messagingSenderId: "622370903723",
+    appId: "1:622370903723:web:ef3cf99c9f731adcf009ee"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+    // make auth and firestore references
+    const auth = firebase.auth();
+
+  </script>
 </body>
 </html>
