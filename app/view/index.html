@@ -21,9 +21,6 @@
             <li class="logged-in">
               <a href="#" class="grey-text" id="logout">Logout</a>
             </li>
-            <li class="logged-in">
-              <a href="#" class="grey-text modal-trigger" data-target="modal-create">Create Guide</a>
-            </li>
             <li class="logged-out">
               <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
             </li>
@@ -48,48 +45,9 @@
             <input type="password" id="signup-password" required />
             <label for="signup-password">Choose password</label>
           </div>
-          <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
-          <button
-          style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-          id="checkout-button-sku_FyWk7SsceCRUid"
-          role="link"
-          >
-          Checkout
-          </button>
-
-          <div id="error-message"></div>
-
-          <script>
-          (function() {
-          var stripe = Stripe('pk_test_CDT54sqWOlsBKVNZJUVPg5Po00xYTB6kQ6');
-
-          var checkoutButton = document.getElementById('checkout-button-sku_FyWk7SsceCRUid');
-          checkoutButton.addEventListener('click', function () {
-            // When the customer clicks on the button, redirect
-            // them to Checkout.
-            stripe.redirectToCheckout({
-              items: [{sku: 'sku_FyWk7SsceCRUid', quantity: 1}],
-
-              // Do not rely on the redirect to the successUrl for fulfilling
-              // purchases, customers may not always reach the success_url after
-              // a successful payment.
-              // Instead use one of the strategies described in
-              // https://stripe.com/docs/payments/checkout/fulfillment
-              successUrl: 'https://fastaiapp-85ff8.firebaseio.com',
-              cancelUrl: 'https://fastaiapp-85ff8.firebaseio.com',
-            })
-            .then(function (result) {
-              if (result.error) {
-                // If `redirectToCheckout` fails due to a browser or network
-                // error, display the localized error message to your customer.
-                var displayError = document.getElementById('error-message');
-                displayError.textContent = result.error.message;
-              }
-            });
-          });
-          })();
-          </script>
+         
           <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+          <div id="error-message"></div>
         </form>
       </div>
     </div>
@@ -120,37 +78,7 @@
         <div class="account-extras"></div>
       </div>
     </div>
-<div id="modal-create" class="modal">
-  <div class='center'>
-    <div class='title'>Classify lung images</div>
-    <p>
-      Use images of lung scans to see if it has <strong>pneumonia</strong> 
-    </p>
-    <div class='content'>
-      <div class='no-display'>
-        <input id='file-input'
-               class='no-display'
-               type='file'
-               name='file'
-               accept='image/*'
-               onchange='showPicked(this)'>
-      </div>
-      <button class='choose-file-button' type='button' onclick='showPicker()'>Select Image</button>
-      <div class='upload-label'>
-        <label id='upload-label'>No file chosen</label>
-      </div>
-      <div>
-        <img id='image-picked' class='no-display' alt='Chosen Image' height='200'>
-      </div>
-      <div class='analyze'>
-        <button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button>
-      </div>
-      <div class='result-label'>
-        <label id='result-label'></label>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="../static/auth.js"></script>
